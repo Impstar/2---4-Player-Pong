@@ -101,7 +101,7 @@ void update_state(float dt)
 	float len = sqrtf(v.x*v.x + v.y*v.y);
 	v /= len;
 	otherBumper.SetVelocity(v.y);
-	otherBumper.SetPosition(dt + otherBumper.GetPosition().y);
+	otherBumper.SetPosition(1);
 
 	if (rects_overlap(pongBall.getBoundary(), playerPad.getBoundary()))
 	{
@@ -136,6 +136,8 @@ void render_frame()
 
 bool rects_overlap(FloatRect r1, FloatRect r2)
 {
+	if (r1.left + r1.width <= r2.left)
+		cout << "collided with right side";
 	return !(r1.left + r1.width <= r2.left ||
 		r1.left >= r2.left + r2.width ||
 		r1.top + r1.height <= r2.top ||
