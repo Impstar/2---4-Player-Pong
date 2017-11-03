@@ -1,0 +1,4 @@
+﻿  main.cpp
+c:\users\admin\documents\github\game-230-pong\pong\main.cpp(47): warning C4244: 'argument': conversion from 'unsigned int' to 'float', possible loss of data
+  Pong.vcxproj -> C:\Users\admin\Documents\GitHub\game-230-pong\Debug\Pong.exe
+  Pong.vcxproj -> C:\Users\admin\Documents\GitHub\game-230-pong\Debug\Pong.pdb (Full PDB)
