@@ -20,6 +20,7 @@ public:
 	void SetStartingPosition(float x, float y);
 	void SetSize(float x, float y);
 	void SetPosition(float dt);
+	void SetPositionX(float dt);
 	Vector2f GetPosition();
 	void SetVelocity(float a);
 
@@ -63,6 +64,14 @@ void Paddle::SetPosition(float dt)
 	//pos.x = bumper.getPosition().x;
 	//pos.y = bumper.getPosition().y;
 	pos.y += vel * dt;
+	bumper.setPosition(pos);
+}
+
+void Paddle::SetPositionX(float dt)
+{
+	//pos.x = bumper.getPosition().x;
+	//pos.y = bumper.getPosition().y;
+	pos.x += vel * dt;
 	bumper.setPosition(pos);
 }
 
