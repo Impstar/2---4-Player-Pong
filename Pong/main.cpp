@@ -20,22 +20,30 @@ Vector2f bounce2(Ball pong, Paddle bump);
 void playerBallScore(int num);
 
 RenderWindow window;
+
+//paddles
 Paddle playerPad;
 Paddle player2Pad;
 Paddle player3Pad;
 Paddle player4Pad;
+Paddle obstacle;
+
+//ball
 Ball pongBall;
 
 
 Font font;
 Texture background;
 RectangleShape shape;
+
+//sounds
 Sound ballHit;
 SoundBuffer ballHitBuf;
 Sound music;
 SoundBuffer musicBuf;
 Sound victory;
 SoundBuffer victoryBuf;
+
 Text startingText;
 
 float speed = 1.0f;
@@ -55,7 +63,11 @@ bool onCollisionExitPaddle1;
 bool onCollisionExitPaddle2;
 bool onCollisionExitPaddle3;
 bool onCollisionExitPaddle4;
+bool onCollisionExitPaddleObs;
 
+
+bool withObst = false;
+float obstSpeed = 300.0f;
 
 int main()
 {
@@ -91,6 +103,12 @@ int main()
 	player4Pad.bumper.setFillColor(Color::Yellow);
 	player4Pad.SetStartingPosition(window.getSize().x /2, window.getSize().y - 50);
 	player4Pad.bumper.setPosition(player4Pad.GetPosition());
+
+	//obstacle parameters
+	obstacle.SetSize(15, 60);
+	obstacle.bumper.setFillColor(Color::White);
+	obstacle.SetStartingPosition(window.getSize().x / 2, window.getSize().y / 2);
+	obstacle.bumper.setPosition(obstacle.GetPosition());
 
 	//text
 	font.loadFromFile("arial.TTF");
@@ -136,174 +154,229 @@ void update_state(float dt)
 {
 	if (music.getStatus() != SoundSource::Playing)
 		music.play();
-	//pongBall.getBoundary();
-	pongBall.SetDt(dt * speed);
 
-	//controls player 1's bumper
-	if (Keyboard::isKeyPressed(Keyboard::Up) && playerPad.GetPosition().y > 0)
+	if (numberOfPlayers != 0)
 	{
-		playerPad.SetVelocity(-600);
-		playerPad.SetPosition(dt);
-	}
-	if (Keyboard::isKeyPressed(Keyboard::Down) && playerPad.GetPosition().y < window.getSize().y - 60)
-	{
-		playerPad.SetVelocity(600);
-		playerPad.SetPosition(dt);
-	}
+		pongBall.SetDt(dt * speed);
 
-	//detects if ball hits sides of screen
-
-	if (numberOfPlayers == 2)
-	{
-		if (pongBall.GetPosition().y > window.getSize().y && pongBall.GetVel().y > 0)
-			pongBall.SetVel(pongBall.GetVel().x, -pongBall.GetVel().y);
-
-		if (pongBall.GetPosition().y < 0 && pongBall.GetVel().y < 0)
-			pongBall.SetVel(pongBall.GetVel().x, -pongBall.GetVel().y);
-	}
-	else if (numberOfPlayers == 4)
-	{
-		if (pongBall.GetPosition().y > window.getSize().y && pongBall.GetVel().y > 0)
+		//controls player 1's bumper
+		if (Keyboard::isKeyPressed(Keyboard::Up) && playerPad.GetPosition().y > 0)
 		{
-			playerBallScore(playerLastHit);
+			playerPad.SetVelocity(-600);
+			playerPad.SetPosition(dt);
+		}
+		if (Keyboard::isKeyPressed(Keyboard::Down) && playerPad.GetPosition().y < window.getSize().y - 60)
+		{
+			playerPad.SetVelocity(600);
+			playerPad.SetPosition(dt);
+		}
+
+		//detects if ball hits sides of screen
+		if (numberOfPlayers == 2)
+		{
+			if (pongBall.GetPosition().y > window.getSize().y && pongBall.GetVel().y > 0) 
+				pongBall.SetVel(pongBall.GetVel().x, -pongBall.GetVel().y);
+
+			if (pongBall.GetPosition().y < 0 && pongBall.GetVel().y < 0)
+				pongBall.SetVel(pongBall.GetVel().x, -pongBall.GetVel().y);
+		}
+		else if (numberOfPlayers == 4)
+		{
+			if (pongBall.GetPosition().y > window.getSize().y && pongBall.GetVel().y > 0)
+			{
+				if (playerLastHit != 4)
+					playerBallScore(playerLastHit);
+				else if (player4Points > 0)
+					player4Points--;
+				pongBall.SetStartingPosition(400, 300);
+				playerLastHit = 0;
+				speed = 1;
+			}
+
+			if (pongBall.GetPosition().y < 0 && pongBall.GetVel().y < 0)
+			{
+				if (playerLastHit != 3)
+					playerBallScore(playerLastHit);
+				else if (player3Points > 0)
+					player3Points--;
+				pongBall.SetStartingPosition(400, 300);
+				playerLastHit = 0;
+				speed = 1;
+			}
+		}
+
+		if (pongBall.GetPosition().x > window.getSize().x && pongBall.GetVel().x > 0)
+		{
+			if (playerLastHit != 2 && player2Points > 0)
+				playerBallScore(playerLastHit);
+			else if (player2Points > 0)
+				player2Points--;
 			pongBall.SetStartingPosition(400, 300);
+			playerLastHit = 0;
+			speed = 1;
+		}
+		if (pongBall.GetPosition().x < 0 && pongBall.GetVel().x < 0)
+		{
+			if (playerLastHit != 1)
+				playerBallScore(playerLastHit);
+			else if (playerPoints > 0)
+				playerPoints--;
+			pongBall.SetStartingPosition(400, 300);
+			playerLastHit = 0;
 			speed = 1;
 		}
 
-		if (pongBall.GetPosition().y < 0 && pongBall.GetVel().y < 0)
+		//calculates player2's movements
+		Vector2f v = pongBall.GetPosition() - player2Pad.GetPosition();
+		float len = sqrtf(v.x*v.x + v.y*v.y);
+		v /= len;
+		player2Pad.SetVelocity(v.y);
+		player2Pad.SetPosition(1);
+
+		if (numberOfPlayers == 4)
 		{
-			playerBallScore(playerLastHit);
-			pongBall.SetStartingPosition(400, 300);
-			speed = 1;
+			//calculates player3's movements
+			Vector2f v2 = pongBall.GetPosition() - player3Pad.GetPosition();
+			float len2 = sqrtf(v2.x*v2.x + v2.y*v2.y);
+			v2 /= len2;
+			player3Pad.SetVelocity(v2.x);
+			player3Pad.SetPositionX(1);
+
+			//calculates player4's movements
+			Vector2f v3 = pongBall.GetPosition() - player4Pad.GetPosition();
+			float len3 = sqrtf(v3.x*v3.x + v3.y*v3.y);
+			v3 /= len3;
+			player4Pad.SetVelocity(v3.x);
+			player4Pad.SetPositionX(1);
 		}
-	}
 
-	if (pongBall.GetPosition().x > window.getSize().x && pongBall.GetVel().x > 0)
-	{
-		playerBallScore(playerLastHit);
-		pongBall.SetStartingPosition(400, 300);
-		speed = 1;
-	}
-	if (pongBall.GetPosition().x < 0 && pongBall.GetVel().x < 0)
-	{
-		playerBallScore(playerLastHit);
-		pongBall.SetStartingPosition(400, 300);
-		speed = 1;
-	}
-
-	//calculates player2's movements
-	Vector2f v = pongBall.GetPosition() - player2Pad.GetPosition();
-	float len = sqrtf(v.x*v.x + v.y*v.y);
-	v /= len;
-	player2Pad.SetVelocity(v.y);
-	player2Pad.SetPosition(1);
-
-	if (numberOfPlayers == 4)
-	{
-		//calculates player3's movements
-		Vector2f v2 = pongBall.GetPosition() - player3Pad.GetPosition();
-		float len2 = sqrtf(v2.x*v2.x + v2.y*v2.y);
-		v2 /= len2;
-		player3Pad.SetVelocity(v2.x);
-		player3Pad.SetPositionX(1);
-
-		//calculates player4's movements
-		Vector2f v3 = pongBall.GetPosition() - player4Pad.GetPosition();
-		float len3 = sqrtf(v3.x*v3.x + v3.y*v3.y);
-		v3 /= len3;
-		player4Pad.SetVelocity(v3.x);
-		player4Pad.SetPositionX(1);
-	}
-
-	//detects ball to bumper collison for player 1
-	if (rects_overlap(pongBall.getBoundary(), playerPad.getBoundary()) && onCollisionExitPaddle1)
-	{
-		onCollisionExitPaddle1 = false;
-
-		Vector2f direction(bounce(pongBall, playerPad).x, bounce(pongBall, playerPad).y);
-		float magnitude = sqrt(pongBall.GetVel().x * pongBall.GetVel().x + pongBall.GetVel().y * pongBall.GetVel().y);
-		Vector2f newVelocity = direction * magnitude;
-		pongBall.SetVel(newVelocity.x, newVelocity.y);
-
-		speed += 0.1;
-		playerLastHit = 1;
-
-		if (!gameOver)
-			ballHit.play();
-
-	} else {
-		onCollisionExitPaddle1 = true;
-	}
-
-	//detects ball to bumper collision for player 2
-	if (rects_overlap(pongBall.getBoundary(), player2Pad.getBoundary()) && onCollisionExitPaddle2)
-	{
-		onCollisionExitPaddle2 = false;
-
-		Vector2f direction(bounce(pongBall, player2Pad).x, bounce(pongBall, player2Pad).y);
-		float magnitude = sqrt(pongBall.GetVel().x * pongBall.GetVel().x + pongBall.GetVel().y * pongBall.GetVel().y);
-		Vector2f newVelocity = direction * magnitude;
-		pongBall.SetVel(newVelocity.x, newVelocity.y);
-
-		speed += 0.1;
-		playerLastHit = 2;
-
-		if (!gameOver)
-			ballHit.play();
-
-	} else {
-		onCollisionExitPaddle2 = true;
-	}
-
-	if (numberOfPlayers == 4)
-	{
-		//detects ball to bumper collision for player 3
-		if (rects_overlap(pongBall.getBoundary(), player3Pad.getBoundary()) && onCollisionExitPaddle3)
+		//calculates obstacle's movements
+		if (withObst)
 		{
-			onCollisionExitPaddle3 = false;
+			obstacle.SetVelocity(obstSpeed);
+			obstacle.SetPosition(dt);
+			if (obstacle.GetPosition().y > 0)
+				obstSpeed = -obstSpeed;
+			if (obstacle.GetPosition().y < window.getSize().y - 60)
+				obstSpeed = -obstSpeed;
 
-			Vector2f direction(bounce(pongBall, player3Pad).x, bounce(pongBall, player3Pad).y);
+		}
+
+		//detects ball to bumper collison for player 1
+		if (rects_overlap(pongBall.getBoundary(), playerPad.getBoundary()) && onCollisionExitPaddle1)
+		{
+			onCollisionExitPaddle1 = false;
+
+			Vector2f direction(bounce(pongBall, playerPad).x, bounce(pongBall, playerPad).y);
 			float magnitude = sqrt(pongBall.GetVel().x * pongBall.GetVel().x + pongBall.GetVel().y * pongBall.GetVel().y);
 			Vector2f newVelocity = direction * magnitude;
 			pongBall.SetVel(newVelocity.x, newVelocity.y);
 
 			speed += 0.1;
-			playerLastHit = 3;
+			playerLastHit = 1;
 
 			if (!gameOver)
 				ballHit.play();
 
 		}
 		else {
-			onCollisionExitPaddle3 = true;
+			onCollisionExitPaddle1 = true;
 		}
 
-		//detects ball to bumper collision for player 4
-		if (rects_overlap(pongBall.getBoundary(), player4Pad.getBoundary()) && onCollisionExitPaddle3)
+		//detects ball to bumper collision for player 2
+		if (rects_overlap(pongBall.getBoundary(), player2Pad.getBoundary()) && onCollisionExitPaddle2)
 		{
-			onCollisionExitPaddle4 = false;
+			onCollisionExitPaddle2 = false;
 
-			Vector2f direction(bounce(pongBall, player4Pad).x, bounce(pongBall, player4Pad).y);
+			Vector2f direction(bounce(pongBall, player2Pad).x, bounce(pongBall, player2Pad).y);
 			float magnitude = sqrt(pongBall.GetVel().x * pongBall.GetVel().x + pongBall.GetVel().y * pongBall.GetVel().y);
 			Vector2f newVelocity = direction * magnitude;
 			pongBall.SetVel(newVelocity.x, newVelocity.y);
 
 			speed += 0.1;
-			playerLastHit = 4;
+			playerLastHit = 2;
 
 			if (!gameOver)
 				ballHit.play();
 
 		}
 		else {
-			onCollisionExitPaddle4 = true;
+			onCollisionExitPaddle2 = true;
 		}
+
+		if (numberOfPlayers == 4)
+		{
+			//detects ball to bumper collision for player 3
+			if (rects_overlap(pongBall.getBoundary(), player3Pad.getBoundary()) && onCollisionExitPaddle3)
+			{
+				onCollisionExitPaddle3 = false;
+
+				Vector2f direction(bounce(pongBall, player3Pad).x, bounce(pongBall, player3Pad).y);
+				float magnitude = sqrt(pongBall.GetVel().x * pongBall.GetVel().x + pongBall.GetVel().y * pongBall.GetVel().y);
+				Vector2f newVelocity = direction * magnitude;
+				pongBall.SetVel(newVelocity.x, newVelocity.y);
+
+				speed += 0.1;
+				playerLastHit = 3;
+
+				if (!gameOver)
+					ballHit.play();
+
+			}
+			else {
+				onCollisionExitPaddle3 = true;
+			}
+
+			//detects ball to bumper collision for player 4
+			if (rects_overlap(pongBall.getBoundary(), player4Pad.getBoundary()) && onCollisionExitPaddle3)
+			{
+				onCollisionExitPaddle4 = false;
+
+				Vector2f direction(bounce(pongBall, player4Pad).x, bounce(pongBall, player4Pad).y);
+				float magnitude = sqrt(pongBall.GetVel().x * pongBall.GetVel().x + pongBall.GetVel().y * pongBall.GetVel().y);
+				Vector2f newVelocity = direction * magnitude;
+				pongBall.SetVel(newVelocity.x, newVelocity.y);
+
+				speed += 0.1;
+				playerLastHit = 4;
+
+				if (!gameOver)
+					ballHit.play();
+
+			}
+			else {
+				onCollisionExitPaddle4 = true;
+			}
+		}
+
+		//obstacle collision detection
+		if (withObst)
+		{
+			if (rects_overlap(pongBall.getBoundary(), obstacle.getBoundary()) && onCollisionExitPaddleObs && playerLastHit != 0)
+			{
+				onCollisionExitPaddleObs = false;
+
+				Vector2f direction(bounce(pongBall, obstacle).x, bounce(pongBall, obstacle).y);
+				float magnitude = sqrt(pongBall.GetVel().x * pongBall.GetVel().x + pongBall.GetVel().y * pongBall.GetVel().y);
+				Vector2f newVelocity = direction * magnitude;
+				pongBall.SetVel(newVelocity.x, newVelocity.y);
+
+				speed += 0.1;
+				playerLastHit = 1;
+
+				if (!gameOver)
+					ballHit.play();
+
+			}
+			else {
+				onCollisionExitPaddleObs = true;
+			}
+		}
+
+		//if player has more than 5 points, they win, gameover
+		if (playerPoints >= 5 || player2Points >= 5 || player3Points >= 5 || player4Points >= 5)
+			gameOver = true;
 	}
-
-	//if player has more than 5 points, they win, gameover
-	if (playerPoints >= 5 || player2Points >= 5 || player3Points >=5 || player4Points >= 5)
-		gameOver = true;
-
 	if (gameOver)
 	{
 		if (victorySound == false)
@@ -321,6 +394,7 @@ void update_state(float dt)
 			pongBall.SetStartingPosition(400, 300);
 			numberOfPlayers = 0;
 			victorySound = false;
+			withObst = false;
 		}
 	}
 
@@ -330,6 +404,11 @@ void update_state(float dt)
 			numberOfPlayers = 2;
 		if (Keyboard::isKeyPressed(Keyboard::Num2))
 			numberOfPlayers = 4;
+	}
+	if (numberOfPlayers == 2)
+	{
+		if (Keyboard::isKeyPressed(Keyboard::O))
+			withObst = true;
 	}
 	pongBall.SetPosition();
 	
@@ -351,6 +430,8 @@ void render_frame()
 			window.draw(pongBall.ball);
 			window.draw(playerPad.bumper);
 			window.draw(player2Pad.bumper);
+			if (withObst)
+				window.draw(obstacle.bumper);
 			if (numberOfPlayers == 4)
 			{
 				window.draw(player3Pad.bumper);
@@ -418,7 +499,7 @@ void render_frame()
 			{
 				gameOverText.setString("Game Over: Player Three Wins!");
 			}
-			if (player3Points >= 5)
+			if (player4Points >= 5)
 			{
 				gameOverText.setString("Game Over: Player Four Wins!");
 			}
@@ -428,8 +509,8 @@ void render_frame()
 
 	//starting text and 2 vs 4 player choice
 	startingText.setFont(font);
-	startingText.setCharacterSize(50);
-	startingText.setString("Enter 1 for two players,\n enter 2 for 4 players: ");
+	startingText.setCharacterSize(30);
+	startingText.setString("Enter 1 for two players,\n enter 2 for 4 players\nIf you pick two players, press 'O'\nto create an obstacle: ");
 	startingText.setFillColor(Color::Green);
 	startingText.setPosition(75, 300);
 	if (numberOfPlayers == 0)

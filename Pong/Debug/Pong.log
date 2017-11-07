@@ -1,14 +1,16 @@
 ﻿  main.cpp
-c:\users\admin\documents\github\game-230-pong\pong\main.cpp(80): warning C4244: 'argument': conversion from 'unsigned int' to 'float', possible loss of data
-c:\users\admin\documents\github\game-230-pong\pong\main.cpp(86): warning C4244: 'argument': conversion from 'unsigned int' to 'float', possible loss of data
 c:\users\admin\documents\github\game-230-pong\pong\main.cpp(92): warning C4244: 'argument': conversion from 'unsigned int' to 'float', possible loss of data
-c:\users\admin\documents\github\game-230-pong\pong\main.cpp(100): warning C4244: 'argument': conversion from 'unsigned int' to 'float', possible loss of data
-c:\users\admin\documents\github\game-230-pong\pong\main.cpp(228): warning C4305: '+=': truncation from 'double' to 'float'
-c:\users\admin\documents\github\game-230-pong\pong\main.cpp(248): warning C4305: '+=': truncation from 'double' to 'float'
-c:\users\admin\documents\github\game-230-pong\pong\main.cpp(270): warning C4305: '+=': truncation from 'double' to 'float'
-c:\users\admin\documents\github\game-230-pong\pong\main.cpp(291): warning C4305: '+=': truncation from 'double' to 'float'
-c:\users\admin\documents\github\game-230-pong\pong\main.cpp(375): warning C4244: 'argument': conversion from 'unsigned int' to 'float', possible loss of data
-c:\users\admin\documents\github\game-230-pong\pong\main.cpp(386): warning C4244: 'argument': conversion from 'unsigned int' to 'float', possible loss of data
-c:\users\admin\documents\github\game-230-pong\pong\main.cpp(395): warning C4244: 'argument': conversion from 'unsigned int' to 'float', possible loss of data
+c:\users\admin\documents\github\game-230-pong\pong\main.cpp(98): warning C4244: 'argument': conversion from 'unsigned int' to 'float', possible loss of data
+c:\users\admin\documents\github\game-230-pong\pong\main.cpp(104): warning C4244: 'argument': conversion from 'unsigned int' to 'float', possible loss of data
+c:\users\admin\documents\github\game-230-pong\pong\main.cpp(110): warning C4244: 'argument': conversion from 'unsigned int' to 'float', possible loss of data
+c:\users\admin\documents\github\game-230-pong\pong\main.cpp(118): warning C4244: 'argument': conversion from 'unsigned int' to 'float', possible loss of data
+c:\users\admin\documents\github\game-230-pong\pong\main.cpp(275): warning C4305: '+=': truncation from 'double' to 'float'
+c:\users\admin\documents\github\game-230-pong\pong\main.cpp(296): warning C4305: '+=': truncation from 'double' to 'float'
+c:\users\admin\documents\github\game-230-pong\pong\main.cpp(319): warning C4305: '+=': truncation from 'double' to 'float'
+c:\users\admin\documents\github\game-230-pong\pong\main.cpp(340): warning C4305: '+=': truncation from 'double' to 'float'
+c:\users\admin\documents\github\game-230-pong\pong\main.cpp(364): warning C4305: '+=': truncation from 'double' to 'float'
+c:\users\admin\documents\github\game-230-pong\pong\main.cpp(456): warning C4244: 'argument': conversion from 'unsigned int' to 'float', possible loss of data
+c:\users\admin\documents\github\game-230-pong\pong\main.cpp(467): warning C4244: 'argument': conversion from 'unsigned int' to 'float', possible loss of data
+c:\users\admin\documents\github\game-230-pong\pong\main.cpp(476): warning C4244: 'argument': conversion from 'unsigned int' to 'float', possible loss of data
   Pong.vcxproj -> C:\Users\admin\Documents\GitHub\game-230-pong\Debug\Pong.exe
   Pong.vcxproj -> C:\Users\admin\Documents\GitHub\game-230-pong\Debug\Pong.pdb (Full PDB)
