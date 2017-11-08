@@ -1,16 +1,22 @@
 ﻿  main.cpp
-c:\users\admin\documents\github\game-230-pong\pong\main.cpp(92): warning C4244: 'argument': conversion from 'unsigned int' to 'float', possible loss of data
-c:\users\admin\documents\github\game-230-pong\pong\main.cpp(98): warning C4244: 'argument': conversion from 'unsigned int' to 'float', possible loss of data
-c:\users\admin\documents\github\game-230-pong\pong\main.cpp(104): warning C4244: 'argument': conversion from 'unsigned int' to 'float', possible loss of data
-c:\users\admin\documents\github\game-230-pong\pong\main.cpp(110): warning C4244: 'argument': conversion from 'unsigned int' to 'float', possible loss of data
-c:\users\admin\documents\github\game-230-pong\pong\main.cpp(118): warning C4244: 'argument': conversion from 'unsigned int' to 'float', possible loss of data
-c:\users\admin\documents\github\game-230-pong\pong\main.cpp(275): warning C4305: '+=': truncation from 'double' to 'float'
-c:\users\admin\documents\github\game-230-pong\pong\main.cpp(296): warning C4305: '+=': truncation from 'double' to 'float'
-c:\users\admin\documents\github\game-230-pong\pong\main.cpp(319): warning C4305: '+=': truncation from 'double' to 'float'
-c:\users\admin\documents\github\game-230-pong\pong\main.cpp(340): warning C4305: '+=': truncation from 'double' to 'float'
-c:\users\admin\documents\github\game-230-pong\pong\main.cpp(364): warning C4305: '+=': truncation from 'double' to 'float'
-c:\users\admin\documents\github\game-230-pong\pong\main.cpp(456): warning C4244: 'argument': conversion from 'unsigned int' to 'float', possible loss of data
-c:\users\admin\documents\github\game-230-pong\pong\main.cpp(467): warning C4244: 'argument': conversion from 'unsigned int' to 'float', possible loss of data
-c:\users\admin\documents\github\game-230-pong\pong\main.cpp(476): warning C4244: 'argument': conversion from 'unsigned int' to 'float', possible loss of data
+c:\users\admin\documents\github\game-230-pong\pong\main.cpp(95): warning C4244: 'argument': conversion from 'unsigned int' to 'float', possible loss of data
+c:\users\admin\documents\github\game-230-pong\pong\main.cpp(101): warning C4244: 'argument': conversion from 'unsigned int' to 'float', possible loss of data
+c:\users\admin\documents\github\game-230-pong\pong\main.cpp(107): warning C4244: 'argument': conversion from 'unsigned int' to 'float', possible loss of data
+c:\users\admin\documents\github\game-230-pong\pong\main.cpp(113): warning C4244: 'argument': conversion from 'unsigned int' to 'float', possible loss of data
+c:\users\admin\documents\github\game-230-pong\pong\main.cpp(121): warning C4244: 'argument': conversion from 'unsigned int' to 'float', possible loss of data
+c:\users\admin\documents\github\game-230-pong\pong\main.cpp(250): warning C4305: 'argument': truncation from 'double' to 'float'
+c:\users\admin\documents\github\game-230-pong\pong\main.cpp(257): warning C4305: 'argument': truncation from 'double' to 'float'
+c:\users\admin\documents\github\game-230-pong\pong\main.cpp(285): warning C4305: '+=': truncation from 'double' to 'float'
+c:\users\admin\documents\github\game-230-pong\pong\main.cpp(310): warning C4305: '+=': truncation from 'double' to 'float'
+c:\users\admin\documents\github\game-230-pong\pong\main.cpp(337): warning C4305: '+=': truncation from 'double' to 'float'
+c:\users\admin\documents\github\game-230-pong\pong\main.cpp(361): warning C4305: '+=': truncation from 'double' to 'float'
+c:\users\admin\documents\github\game-230-pong\pong\main.cpp(389): warning C4305: '+=': truncation from 'double' to 'float'
+c:\users\admin\documents\github\game-230-pong\pong\main.cpp(482): warning C4244: 'argument': conversion from 'unsigned int' to 'float', possible loss of data
+c:\users\admin\documents\github\game-230-pong\pong\main.cpp(493): warning C4244: 'argument': conversion from 'unsigned int' to 'float', possible loss of data
+c:\users\admin\documents\github\game-230-pong\pong\main.cpp(502): warning C4244: 'argument': conversion from 'unsigned int' to 'float', possible loss of data
+c:\users\admin\documents\github\game-230-pong\pong\main.cpp(562): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+c:\users\admin\documents\github\game-230-pong\pong\main.cpp(572): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+c:\users\admin\documents\github\game-230-pong\pong\main.cpp(582): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+c:\users\admin\documents\github\game-230-pong\pong\main.cpp(592): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
   Pong.vcxproj -> C:\Users\admin\Documents\GitHub\game-230-pong\Debug\Pong.exe
   Pong.vcxproj -> C:\Users\admin\Documents\GitHub\game-230-pong\Debug\Pong.pdb (Full PDB)

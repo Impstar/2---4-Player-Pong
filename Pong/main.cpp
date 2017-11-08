@@ -16,6 +16,9 @@ void render_frame();
 bool rects_overlap(FloatRect r1, FloatRect r2);
 Vector2f bounce(Ball pong, Paddle bump);
 Vector2f bounce2(Ball pong, Paddle bump);
+Vector2f bounce3(Ball pong, Paddle bump);
+Vector2f bounce4(Ball pong, Paddle bump);
+
 
 void playerBallScore(int num);
 
@@ -75,10 +78,10 @@ int main()
 	Clock clock;
 
 	//ball parameters
-	pongBall.ball.setFillColor(Color::Red);
+	pongBall.ball.setFillColor(Color::White);
 	pongBall.ball.setOrigin(8, 8);
 	pongBall.SetStartingPosition(400, 300);
-	pongBall.SetVel(100, 300);
+	pongBall.SetVel(250, 250);
 
 	//player 1 bumper parameters
 	playerPad.SetSize(15, 60);
@@ -189,6 +192,7 @@ void update_state(float dt)
 				else if (player4Points > 0)
 					player4Points--;
 				pongBall.SetStartingPosition(400, 300);
+				pongBall.ball.setFillColor(Color::White);
 				playerLastHit = 0;
 				speed = 1;
 			}
@@ -200,6 +204,7 @@ void update_state(float dt)
 				else if (player3Points > 0)
 					player3Points--;
 				pongBall.SetStartingPosition(400, 300);
+				pongBall.ball.setFillColor(Color::White);
 				playerLastHit = 0;
 				speed = 1;
 			}
@@ -212,6 +217,7 @@ void update_state(float dt)
 			else if (player2Points > 0)
 				player2Points--;
 			pongBall.SetStartingPosition(400, 300);
+			pongBall.ball.setFillColor(Color::White);
 			playerLastHit = 0;
 			speed = 1;
 		}
@@ -222,6 +228,7 @@ void update_state(float dt)
 			else if (playerPoints > 0)
 				playerPoints--;
 			pongBall.SetStartingPosition(400, 300);
+			pongBall.ball.setFillColor(Color::White);
 			playerLastHit = 0;
 			speed = 1;
 		}
@@ -240,14 +247,14 @@ void update_state(float dt)
 			float len2 = sqrtf(v2.x*v2.x + v2.y*v2.y);
 			v2 /= len2;
 			player3Pad.SetVelocity(v2.x);
-			player3Pad.SetPositionX(1);
+			player3Pad.SetPositionX(1.2);
 
 			//calculates player4's movements
 			Vector2f v3 = pongBall.GetPosition() - player4Pad.GetPosition();
 			float len3 = sqrtf(v3.x*v3.x + v3.y*v3.y);
 			v3 /= len3;
 			player4Pad.SetVelocity(v3.x);
-			player4Pad.SetPositionX(1);
+			player4Pad.SetPositionX(1.2);
 		}
 
 		//calculates obstacle's movements
@@ -263,42 +270,51 @@ void update_state(float dt)
 		}
 
 		//detects ball to bumper collison for player 1
-		if (rects_overlap(pongBall.getBoundary(), playerPad.getBoundary()) && onCollisionExitPaddle1)
+		if (rects_overlap(pongBall.getBoundary(), playerPad.getBoundary()))
 		{
-			onCollisionExitPaddle1 = false;
+			if (onCollisionExitPaddle1)
+			{
+				onCollisionExitPaddle1 = false;
 
-			Vector2f direction(bounce(pongBall, playerPad).x, bounce(pongBall, playerPad).y);
-			float magnitude = sqrt(pongBall.GetVel().x * pongBall.GetVel().x + pongBall.GetVel().y * pongBall.GetVel().y);
-			Vector2f newVelocity = direction * magnitude;
-			pongBall.SetVel(newVelocity.x, newVelocity.y);
+				Vector2f direction(bounce(pongBall, playerPad).x, bounce(pongBall, playerPad).y);
+				float magnitude = sqrt(pongBall.GetVel().x * pongBall.GetVel().x + pongBall.GetVel().y * pongBall.GetVel().y);
+				Vector2f newVelocity = direction * magnitude;
+				pongBall.SetVel(newVelocity.x, newVelocity.y);
+				//pongBall.SetVel(-pongBall.GetVel().x, pongBall.GetVel().y);
 
-			speed += 0.1;
-			playerLastHit = 1;
+				speed += 0.1;
+				playerLastHit = 1;
+				pongBall.ball.setFillColor(Color::Green);
 
-			if (!gameOver)
-				ballHit.play();
+				if (!gameOver)
+					ballHit.play();
 
+			}
 		}
 		else {
 			onCollisionExitPaddle1 = true;
 		}
 
 		//detects ball to bumper collision for player 2
-		if (rects_overlap(pongBall.getBoundary(), player2Pad.getBoundary()) && onCollisionExitPaddle2)
+		if (rects_overlap(pongBall.getBoundary(), player2Pad.getBoundary()))
 		{
-			onCollisionExitPaddle2 = false;
+			if (onCollisionExitPaddle2)
+			{
+				onCollisionExitPaddle2 = false;
 
-			Vector2f direction(bounce(pongBall, player2Pad).x, bounce(pongBall, player2Pad).y);
-			float magnitude = sqrt(pongBall.GetVel().x * pongBall.GetVel().x + pongBall.GetVel().y * pongBall.GetVel().y);
-			Vector2f newVelocity = direction * magnitude;
-			pongBall.SetVel(newVelocity.x, newVelocity.y);
+				Vector2f direction(bounce2(pongBall, player2Pad).x, bounce2(pongBall, player2Pad).y);
+				float magnitude = sqrt(pongBall.GetVel().x * pongBall.GetVel().x + pongBall.GetVel().y * pongBall.GetVel().y);
+				Vector2f newVelocity = direction * magnitude;
+				pongBall.SetVel(newVelocity.x, newVelocity.y);
 
-			speed += 0.1;
-			playerLastHit = 2;
+				speed += 0.1;
+				playerLastHit = 2;
+				pongBall.ball.setFillColor(Color::Blue);
 
-			if (!gameOver)
-				ballHit.play();
+				if (!gameOver)
+					ballHit.play();
 
+			}
 		}
 		else {
 			onCollisionExitPaddle2 = true;
@@ -307,42 +323,48 @@ void update_state(float dt)
 		if (numberOfPlayers == 4)
 		{
 			//detects ball to bumper collision for player 3
-			if (rects_overlap(pongBall.getBoundary(), player3Pad.getBoundary()) && onCollisionExitPaddle3)
+			if (rects_overlap(pongBall.getBoundary(), player3Pad.getBoundary()))
 			{
-				onCollisionExitPaddle3 = false;
+				if (onCollisionExitPaddle3)
+				{
+					onCollisionExitPaddle3 = false;
 
-				Vector2f direction(bounce(pongBall, player3Pad).x, bounce(pongBall, player3Pad).y);
-				float magnitude = sqrt(pongBall.GetVel().x * pongBall.GetVel().x + pongBall.GetVel().y * pongBall.GetVel().y);
-				Vector2f newVelocity = direction * magnitude;
-				pongBall.SetVel(newVelocity.x, newVelocity.y);
+					Vector2f direction(bounce3(pongBall, player3Pad).x, bounce3(pongBall, player3Pad).y);
+					float magnitude = sqrt(pongBall.GetVel().x * pongBall.GetVel().x + pongBall.GetVel().y * pongBall.GetVel().y);
+					Vector2f newVelocity = direction * magnitude;
+					pongBall.SetVel(newVelocity.x, newVelocity.y);
 
-				speed += 0.1;
-				playerLastHit = 3;
+					speed += 0.1;
+					playerLastHit = 3;
+					pongBall.ball.setFillColor(Color::Red);
 
-				if (!gameOver)
-					ballHit.play();
-
+					if (!gameOver)
+						ballHit.play();
+				}
 			}
 			else {
 				onCollisionExitPaddle3 = true;
 			}
 
 			//detects ball to bumper collision for player 4
-			if (rects_overlap(pongBall.getBoundary(), player4Pad.getBoundary()) && onCollisionExitPaddle3)
+			if (rects_overlap(pongBall.getBoundary(), player4Pad.getBoundary()))
 			{
-				onCollisionExitPaddle4 = false;
+				if (onCollisionExitPaddle4)
+				{
+					onCollisionExitPaddle4 = false;
 
-				Vector2f direction(bounce(pongBall, player4Pad).x, bounce(pongBall, player4Pad).y);
-				float magnitude = sqrt(pongBall.GetVel().x * pongBall.GetVel().x + pongBall.GetVel().y * pongBall.GetVel().y);
-				Vector2f newVelocity = direction * magnitude;
-				pongBall.SetVel(newVelocity.x, newVelocity.y);
+					Vector2f direction(bounce4(pongBall, player4Pad).x, bounce4(pongBall, player4Pad).y);
+					float magnitude = sqrt(pongBall.GetVel().x * pongBall.GetVel().x + pongBall.GetVel().y * pongBall.GetVel().y);
+					Vector2f newVelocity = direction * magnitude;
+					pongBall.SetVel(newVelocity.x, newVelocity.y);
 
-				speed += 0.1;
-				playerLastHit = 4;
+					speed += 0.1;
+					playerLastHit = 4;
+					pongBall.ball.setFillColor(Color::Yellow);
 
-				if (!gameOver)
-					ballHit.play();
-
+					if (!gameOver)
+						ballHit.play();
+				}
 			}
 			else {
 				onCollisionExitPaddle4 = true;
@@ -352,21 +374,24 @@ void update_state(float dt)
 		//obstacle collision detection
 		if (withObst)
 		{
-			if (rects_overlap(pongBall.getBoundary(), obstacle.getBoundary()) && onCollisionExitPaddleObs && playerLastHit != 0)
+			if (rects_overlap(pongBall.getBoundary(), obstacle.getBoundary()) && playerLastHit != 0)
 			{
-				onCollisionExitPaddleObs = false;
+				if (onCollisionExitPaddleObs)
+				{
+					onCollisionExitPaddleObs = false;
 
-				Vector2f direction(bounce(pongBall, obstacle).x, bounce(pongBall, obstacle).y);
-				float magnitude = sqrt(pongBall.GetVel().x * pongBall.GetVel().x + pongBall.GetVel().y * pongBall.GetVel().y);
-				Vector2f newVelocity = direction * magnitude;
-				pongBall.SetVel(newVelocity.x, newVelocity.y);
+					//Vector2f direction(bounce(pongBall, obstacle).x, bounce(pongBall, obstacle).y);
+					//float magnitude = sqrt(pongBall.GetVel().x * pongBall.GetVel().x + pongBall.GetVel().y * pongBall.GetVel().y);
+					//Vector2f newVelocity = direction * magnitude;
+					//pongBall.SetVel(newVelocity.x, newVelocity.y);
+					pongBall.SetVel(-pongBall.GetVel().x, pongBall.GetVel().y);
 
-				speed += 0.1;
-				playerLastHit = 1;
+					speed += 0.1;
+					playerLastHit = 1;
 
-				if (!gameOver)
-					ballHit.play();
-
+					if (!gameOver)
+						ballHit.play();
+				}
 			}
 			else {
 				onCollisionExitPaddleObs = true;
@@ -392,6 +417,7 @@ void update_state(float dt)
 			player4Points = 0;
 			gameOver = false;
 			pongBall.SetStartingPosition(400, 300);
+			pongBall.ball.setFillColor(Color::White);
 			numberOfPlayers = 0;
 			victorySound = false;
 			withObst = false;
@@ -510,7 +536,7 @@ void render_frame()
 	//starting text and 2 vs 4 player choice
 	startingText.setFont(font);
 	startingText.setCharacterSize(30);
-	startingText.setString("Enter 1 for two players,\n enter 2 for 4 players\nIf you pick two players, press 'O'\nto create an obstacle: ");
+	startingText.setString("Enter 1 for two players,\n Enter 2 for 4 players\nIf you pick two players, press 'O'\nto create an obstacle: ");
 	startingText.setFillColor(Color::Green);
 	startingText.setPosition(75, 300);
 	if (numberOfPlayers == 0)
@@ -533,18 +559,38 @@ Vector2f bounce(Ball pong, Paddle bump)
 	float min = bump.GetPosition().y - pong.GetRadius();
 	float max = bump.GetPosition().y + bump.bumper.getSize().y + pong.GetRadius();
 	float f = ((pong.GetPosition().y - min) / (max - min) * 2) - 1;
-	float angle = f * 70;
+	float angle = f * (70.0/360.0 * 3.14159);
 	Vector2f bounceAngle(cos(angle), sin(angle));
 	return bounceAngle;
 }
 
 Vector2f bounce2(Ball pong, Paddle bump)
 {
+	float min = bump.GetPosition().y - pong.GetRadius();
+	float max = bump.GetPosition().y + bump.bumper.getSize().y + pong.GetRadius();
+	float f = ((pong.GetPosition().y - min) / (max - min) * 2) - 1;
+	float angle = f * (70.0 / 360.0 * 3.14159);
+	Vector2f bounceAngle(-cos(angle), sin(angle));
+	return bounceAngle;
+}
+
+Vector2f bounce3(Ball pong, Paddle bump)
+{
 	float min = bump.GetPosition().x - pong.GetRadius();
 	float max = bump.GetPosition().x + bump.bumper.getSize().x + pong.GetRadius();
 	float f = ((pong.GetPosition().x - min) / (max - min) * 2) - 1;
-	float angle = f * 70;
-	Vector2f bounceAngle(cos(angle), sin(angle));
+	float angle = f * (70.0 / 360.0 * 3.14159 - 3.14159/2);
+	Vector2f bounceAngle(-cos(angle), sin(angle));
+	return bounceAngle;
+}
+
+Vector2f bounce4(Ball pong, Paddle bump)
+{
+	float min = bump.GetPosition().x - pong.GetRadius();
+	float max = bump.GetPosition().x + bump.bumper.getSize().x + pong.GetRadius();
+	float f = ((pong.GetPosition().x - min) / (max - min) * 2) - 1;
+	float angle = f * (70.0 / 360.0 * 3.14159 - 3.14159 / 2);
+	Vector2f bounceAngle(-cos(angle), -sin(angle));
 	return bounceAngle;
 }
 
