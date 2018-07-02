@@ -379,11 +379,6 @@ void update_state(float dt)
 				if (onCollisionExitPaddleObs)
 				{
 					onCollisionExitPaddleObs = false;
-
-					//Vector2f direction(bounce(pongBall, obstacle).x, bounce(pongBall, obstacle).y);
-					//float magnitude = sqrt(pongBall.GetVel().x * pongBall.GetVel().x + pongBall.GetVel().y * pongBall.GetVel().y);
-					//Vector2f newVelocity = direction * magnitude;
-					//pongBall.SetVel(newVelocity.x, newVelocity.y);
 					pongBall.SetVel(-pongBall.GetVel().x, pongBall.GetVel().y);
 
 					speed += 0.1;
@@ -438,8 +433,6 @@ void update_state(float dt)
 	}
 	pongBall.SetPosition();
 	
-	//otherBumper.setPosition(otherBumpPos);
-
 }
 
 
@@ -546,6 +539,7 @@ void render_frame()
 
 }
 
+//checks to see if two objects overlap
 bool rects_overlap(FloatRect r1, FloatRect r2)
 {
 	return !(r1.left + r1.width <= r2.left ||
@@ -554,6 +548,7 @@ bool rects_overlap(FloatRect r1, FloatRect r2)
 		r1.top >= r2.top + r2.height);
 }
 
+//calculates bounce for player 1
 Vector2f bounce(Ball pong, Paddle bump)
 {
 	float min = bump.GetPosition().y - pong.GetRadius();
@@ -564,6 +559,7 @@ Vector2f bounce(Ball pong, Paddle bump)
 	return bounceAngle;
 }
 
+//calculates bounce for player 2
 Vector2f bounce2(Ball pong, Paddle bump)
 {
 	float min = bump.GetPosition().y - pong.GetRadius();
@@ -574,6 +570,7 @@ Vector2f bounce2(Ball pong, Paddle bump)
 	return bounceAngle;
 }
 
+//calculates bounce for player 3
 Vector2f bounce3(Ball pong, Paddle bump)
 {
 	float min = bump.GetPosition().x - pong.GetRadius();
@@ -584,6 +581,7 @@ Vector2f bounce3(Ball pong, Paddle bump)
 	return bounceAngle;
 }
 
+//calculates bounce for player 4
 Vector2f bounce4(Ball pong, Paddle bump)
 {
 	float min = bump.GetPosition().x - pong.GetRadius();
@@ -594,6 +592,7 @@ Vector2f bounce4(Ball pong, Paddle bump)
 	return bounceAngle;
 }
 
+//scores points for relevant player
 void playerBallScore(int num)
 {
 	switch (num)

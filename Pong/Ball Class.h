@@ -88,6 +88,7 @@ float Ball::GetStartingPositionY()
 	return startingY;
 }
 
+//define the unit of frames over time
 void Ball::SetDt(float dt)
 {
 	deltaTime = dt;
@@ -98,6 +99,7 @@ float Ball::GetDt()
 	return deltaTime;
 }
 
+//sets the position over time
 void Ball::SetPosition()
 {
 	pos += vel * deltaTime;
@@ -125,6 +127,7 @@ void Ball::SetBallPosition()
 	ball.setPosition(pos);
 }
 
+//defines the boundary of the ball
 FloatRect Ball::getBoundary()
 {	
 	FloatRect boundary;

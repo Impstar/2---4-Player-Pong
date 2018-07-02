@@ -59,18 +59,16 @@ void Paddle::SetSize(float x, float y)
 	bumper.setSize(Vector2f(x, y));
 }
 
+//sets the Y position of paddle over time
 void Paddle::SetPosition(float dt)
 {
-	//pos.x = bumper.getPosition().x;
-	//pos.y = bumper.getPosition().y;
 	pos.y += vel * dt;
 	bumper.setPosition(pos);
 }
 
+//sets the X position of paddle over time
 void Paddle::SetPositionX(float dt)
 {
-	//pos.x = bumper.getPosition().x;
-	//pos.y = bumper.getPosition().y;
 	pos.x += vel * dt;
 	bumper.setPosition(pos);
 }
@@ -85,6 +83,7 @@ void Paddle::SetVelocity(float a)
 	vel = a;
 }
 
+//defines the boundary of the paddle
 FloatRect Paddle::getBoundary()
 {
 	FloatRect boundary;
